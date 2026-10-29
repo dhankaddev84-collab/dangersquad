@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danger Squad tournament</title>
+  
+  <!-- Font Awesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #ff5722;
+      --primary-glow: rgba(255, 87, 34, 0.4);
+      --accent: #ffb300;
+      --bg-dark: #b3edb7;
+      --card-bg: #dce3ba;
+      --card-border: #1f293d;
+      --text-main: #111010;
+      --text-muted: #86a5db;
+      --success: #0c75bc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgb(1, 45, 12);
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      padding: 6px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Bada Logo Styling */
+    .brand-logo {
+      width: 95px;
+      height: 95px;
+      min-width: 95px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 18px var(--primary-glow);
+      display: block;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 30px;
+      background: radial-gradient(circle at center, rgba(255, 87, 34, 0.15) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 87, 34, 0.2);
+      border: 1px solid var(--primary);
+      color: var(--accent);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 25px;
+      font-size: 1.05rem;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary), #050505);
+      color: #151414;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 5px;
+      height: 22px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* Schedule Cards */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .schedule-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .schedule-card.featured {
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(255, 87, 34, 0.2);
+    }
+
+    .stage-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .match-time {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #090909;
+      margin-bottom: 10px;
+    }
+
+    .match-info-row {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .match-info-row strong {
+      color: #121111;
+    }
+
+    /* Rules */
+    .rules-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .rule-item:last-child {
+      border-bottom: none;
+    }
+
+    .rule-badge {
+      background: rgba(255, 87, 34, 0.15);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      height: fit-content;
+      white-space: nowrap;
+    }
+
+    .rule-item h4 {
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+      color: #0a0a0a;
+    }
+
+    .rule-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Community Handles Section */
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .community-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .community-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px var(--primary-glow);
+      border-color: var(--primary);
+    }
+
+    .community-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .icon-instagram {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+
+    .icon-telegram {
+      background: #0088cc;
+    }
+
+    .icon-whatsapp {
+      background: #25d366;
+    }
+
+    .icon-facebook {
+      background: #1877f2;
+    }
+
+    .community-info h4 {
+      font-size: 0.98rem;
+      color: #0c0c0c;
+      font-weight: 700;
+    }
+
+    .community-info p {
+      font-size: 0.78rem;
+      color: #2b3a4a;
+      font-weight: 500;
+    }
+
+    /* Form */
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 28px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-group input {
+      background: #fafeff;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #111010;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #e64a19);
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status-msg {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .status-msg.success {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--success);
+      color: #34d399;
+    }
+
+    .status-msg.warning {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid var(--accent);
+      color: #fcd34d;
+    }
+
+    .status-msg.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #f87171;
+    }
+
+    /* Mobile Responsive adjustments */
+    @media (max-width: 600px) {
+      .brand-logo {
+        width: 65px;
+        height: 65px;
+        min-width: 65px;
+      }
+      .brand {
+        font-size: 1rem;
+        gap: 10px;
+      }
+      .nav-links a {
+        margin-left: 10px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="brand">
+      <img src="dsnew.jpeg" alt="Danger Squad Logo" class="brand-logo">
+      <div>DANGER SQUAD <span>TOURNAMENT</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="#schedule">Schedule</a>
+      <a href="#rules">Eligibility</a>
+      <a href="#community">Community</a>
+      <a href="#register">Register</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-badge">Solo Community Match</div>
+    <h1><marquee>Battle For The Booyah</marquee></h1>
+    <p>Apna Free Fire UID register karein. Match time check karein aur WhatsApp par Custom Room ID & Password payein.</p>
+    <a href="#register" class="hero-cta">Abhi Register Karein</a>
+  </header>
+
+  <main class="container">
+
+    <!-- Match Schedule -->
+<section id="schedule">
+  <h2 class="section-title">Match Kab Hai? (Schedule)</h2>
+  <div class="schedule-grid">
+    <div class="schedule-card featured">
+      <div class="stage-tag">Match 1 • Qualifiers</div>
+      <!-- Yahan span class="match-date" lagaya gaya hai -->
+      <div class="match-time"><span class="match-date"></span>02:00 PM</div>
+      <div class="match-info-row"><span>Reporting:</span> <strong>01:55 PM (Room Join)</strong></div>
+      <div class="match-info-row"><span>Map:</span> <strong>Bermuda</strong></div>
+      <div class="match-info-row"><span>Format:</span> <strong>Clash Squad</strong></div>
+    </div>
+
+    <div class="schedule-card">
+      <div class="stage-tag">Match 2 • Semi-Final</div>
+      <!-- Yahan span class="match-date" lagaya gaya hai -->
+      <div class="match-time"><span class="match-date"></span>03:00 pm </div>
+      <div class="match-info-row"><span>Reporting:</span> <strong>01:55 PM</strong></div>
+      <div class="match-info-row"><span>Map:</span> <strong>Bermuda</strong></div>
+      <div class="match-info-row"><span>Format:</span> <strong>Clash Squad</strong></div>
+    </div>
+
+    <div class="schedule-card">
+      <div class="stage-tag">Grand Finale</div>
+      <!-- Yahan span class="match-date" lagaya gaya hai -->
+      <div class="match-time"><span class="match-date"></span>04:00 PM</div>
+      <div class="match-info-row"><span>Reporting:</span> <strong>03:55 PM</strong></div>
+      <div class="match-info-row"><span>Map:</span> <strong>Bermuda</strong></div>
+      <div class="match-info-row"><span>Format:</span> <strong>Clash Squad</strong></div>
+    </div>
+  </div>
+</section>
+    <!-- Eligibility -->
+    <section id="rules">
+      <h2 class="section-title">Eligibility & Rules</h2>
+      <div class="rules-card">
+        <div class="rule-item">
+          <div class="rule-badge">Level </div>
+          <div>
+            <h4>Minimum Level </h4>
+            <p>Not Required.</p>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-badge">Rank</div>
+          <div>
+            <h4>Rank</h4>
+            <p>No Need to be in Diamond or higher rank.</p>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-badge">Device</div>
+          <div>
+            <h4>Mobile Only</h4>
+            <p>Sirf phone se khelna allow hai. PC ya Emulator strictly banned hain.</p>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-badge">Fair Play</div>
+          <div>
+            <h4>No Hack / Script / Glitch</h4>
+            <p>Kisi bhi third-party config ya cheat par instant permanent ban lagega.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Handles Section -->
+    <section id="community">
+      <h2 class="section-title">Hamari Community Join Karein</h2>
+      <div class="community-grid">
+        <!-- WhatsApp -->
+        <a href="https://chat.whatsapp.com/F3tzD3lwWJeGUR1R0wR62S?s=cl&p=a&mlu=4&ilr=4&iam=2" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div class="community-icon icon-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <div class="community-info">
+            <h4>WhatsApp</h4>
+            <p>Room ID & Updates</p>
+          </div>
+        </a>
+
+        <!-- Telegram -->
+        <a href="https://t.me/+TTc8al37W_U2YTA1" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div class="community-icon icon-telegram">
+            <i class="fa-brands fa-telegram"></i>
+          </div>
+          <div class="community-info">
+            <h4>Telegram</h4>
+            <p>Match Alerts & Chat</p>
+          </div>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://ig.me/j/GyCieSnwQO1Kyq86/" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div class="community-icon icon-instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <div class="community-info">
+            <h4>Instagram</h4>
+            <p>Highlights & Reels</p>
+          </div>
+        </a>
+
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/share/14yeai26odk/" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div class="community-icon icon-facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </div>
+          <div class="community-info">
+            <h4>Facebook</h4>
+            <p>News & Community</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section id="register">
+      <h2 class="section-title">Solo Registration Form</h2>
+      <div class="form-card">
+        <form id="regForm" onsubmit="handleRegistration(); return false;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="playerName">Player Name * (Sirf Text)</label>
+              <input 
+                type="text" 
+                id="playerName" 
+                required 
+                placeholder="e.g. Rahul Sharma" 
+                oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
+            </div>
+
+            <div class="form-group">
+              <label for="playerUid">Free Fire UID * (Sirf Numbers)</label>
+              <input 
+                type="text" 
+                id="playerUid" 
+                required 
+                inputmode="numeric" 
+                placeholder="e.g. 1928374650" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">WhatsApp Mobile Number * (Sirf 10 Digits)</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                required 
+                maxlength="10" 
+                inputmode="numeric" 
+                placeholder="e.g. 9876543210" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+
+            <div class="form-group">
+              <label for="instagram">Instagram ID (Optional)</label>
+              <input type="text" id="instagram" placeholder="e.g. @hunter_ff">
+            </div>
+          </div>
+
+          <button type="button" class="submit-btn" id="submitBtn" onclick="handleRegistration()">Register Now</button>
+        </form>
+
+        <div id="statusMessage" class="status-msg"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYBpoeJ-mCfbaRXp2MuWr2Tbyo98JnkymZmcCmYoaFugUWvP278Cx7_lRCnVvjUdw/exec";
+
+    async function handleRegistration() {
+      const submitBtn = document.getElementById('submitBtn');
+      const statusMsg = document.getElementById('statusMessage');
+      
+      const playerName = document.getElementById('playerName').value.trim();
+      const playerUid = document.getElementById('playerUid').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const instagram = document.getElementById('instagram').value.trim() || 'N/A';
+
+      if (!playerName) {
+        showMessage("⚠️ Kripya apna Player Name bharein.", "warning");
+        return;
+      }
+      if (!playerUid) {
+        showMessage("⚠️ Kripya Free Fire UID bharein.", "warning");
+        return;
+      }
+      if (phone.length !== 10) {
+        showMessage("⚠️ Kripya 10 anko ka valid WhatsApp mobile number bharein.", "warning");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Checking Details...";
+      statusMsg.style.display = 'none';
+
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+      const payload = {
+        regDate: formattedDate,
+        playerName: playerName,
+        playerUid: playerUid,
+        phone: phone,
+        instagram: instagram
+      };
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        const result = (await response.text()).trim();
+
+        if (result === "ALREADY_REGISTERED_UID") {
+          showMessage("⚠️ <strong>Already Registered!</strong><br>Yeh Free Fire UID pehle se registered hai. Ek UID se doosri entry nahi ho sakti.", "warning");
+        } else if (result === "ALREADY_REGISTERED_PHONE") {
+          showMessage("⚠️ <strong>Already Registered!</strong><br>Yeh WhatsApp Number pehle se registered hai.", "warning");
+        } else if (result === "SUCCESS") {
+          showMessage("✅ <strong>Registration Successful!</strong><br>Aapka slot confirm ho chuka hai. Match Room details WhatsApp par bhej di jayengi.", "success");
+          document.getElementById('regForm').reset();
+        } else {
+          showMessage("❌ Submit error: " + result, "error");
+        }
+
+      } catch (err) {
+        showMessage("❌ Network error. Kripya dobara try karein.", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Register Now";
+      }
+    }
+
+    function showMessage(htmlText, type) {
+      const statusMsg = document.getElementById('statusMessage');
+      statusMsg.className = "status-msg " + type;
+      statusMsg.innerHTML = htmlText;
+      statusMsg.style.display = 'block';
+      statusMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  </script>
+
+</body>
+</html>
